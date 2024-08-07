@@ -1,11 +1,12 @@
 import React from "react";
 import { GameBoard } from "./components/GameBoard";
+import { Container } from './components/styles/Container.styled';
 
 function App() {
   return (
-    <React.Fragment>
+    <Container>
       <GameBoard />
-    </React.Fragment>
+    </Container>
   );
 }
 
