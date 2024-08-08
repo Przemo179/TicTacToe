@@ -21,11 +21,9 @@ export const GameBoard = () => {
     send({ type: 'RESET' })
   };
 
-  const gameState = {
-    playing: state.matches('playing'),
-    won: state.matches('won'),
-    draw: state.matches('draw'),
-  }
+  const PLAYING = state.matches('playing');
+  const WON = state.matches('won');
+  const DRAW = state.matches('draw');
 
   return (
     <Card>
@@ -34,16 +32,16 @@ export const GameBoard = () => {
         handleSizeSelect={(size) => handleSizeSelect(size)}
       />
       <div>
-        {gameState.playing && !state.context.winner && (
+        {PLAYING && !state.context.winner && (
           <p>Current Player: {state.context.currentPlayer}</p>
         )}
-        {gameState.won && (
+        {WON && (
           <p>Winner: Player {state.context.winner}</p>
         )}
-        {gameState.draw && (
+        {DRAW && (
           <p>Draw!</p>
         )}
-        {!gameState.playing && !gameState.won && !gameState.draw && (
+        {!PLAYING && !WON && !DRAW && (
           <p>Select Board size</p>
         )}
       </div>
