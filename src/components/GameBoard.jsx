@@ -1,5 +1,6 @@
 import { useMachine } from '@xstate/react';
-import { Button, Card, FlexElement, Cell, Board, BoardLine } from './styles';
+import { Card, Cell, Board, BoardLine } from './styles';
+import { Header } from "./Header";
 import { stateMachine } from '../store';
 
 export const GameBoard = () => {
@@ -16,29 +17,31 @@ export const GameBoard = () => {
     send({ type, rowIndex, cellIndex });
   };
 
+  const handleReset = () => {
+    send({ type: 'RESET' })
+  };
+
+  const MACHINE_STATE_PLAYING = state.matches('playing');
+  const MACHINE_STATE_WON = state.matches('won');
+  const MACHINE_STATE_DRAW = state.matches('draw');
+
   return (
     <Card>
-      <h2>Tic Tac Toe</h2>
+      <Header 
+        reset={handleReset}
+        handleSizeSelect={(size) => handleSizeSelect(size)}
+      />
       <div>
-        <span>Select Board Size:</span>
-        <Button onClick={() => send({ type: 'RESET' })}>Reset</Button>
-      </div>
-      <FlexElement>
-        <Button onClick={() => handleSizeSelect(3)}>3x3</Button>
-        <Button onClick={() => handleSizeSelect(4)}>4x4</Button>
-        <Button onClick={() => handleSizeSelect(5)}>5x5</Button>
-      </FlexElement>
-      <div>
-        {state.matches('playing') && !state.context.winner && (
+        {MACHINE_STATE_PLAYING && !state.context.winner && (
           <p>Current Player: {state.context.currentPlayer}</p>
         )}
-        {state.matches('won') && (
+        {MACHINE_STATE_WON && (
           <p>Winner: Player {state.context.winner}</p>
         )}
-        {state.matches('draw') && (
+        {MACHINE_STATE_DRAW && (
           <p>Draw!</p>
         )}
-        {!state.matches('playing') && !state.matches('won') && !state.matches('draw') && (
+        {!MACHINE_STATE_PLAYING && !MACHINE_STATE_WON && !MACHINE_STATE_DRAW && (
           <p>Select Board size</p>
         )}
       </div>
